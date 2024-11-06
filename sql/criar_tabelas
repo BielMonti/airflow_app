@@ -1,0 +1,25 @@
+CREATE TABLE IF NOT EXISTS dim_empresa (
+    id_empresa SERIAL PRIMARY KEY,
+    nome_empresa VARCHAR(100),
+    ticker VARCHAR(20)
+);
+
+CREATE TABLE IF NOT EXISTS dim_data (
+    id_data SERIAL PRIMARY KEY,
+    data DATE UNIQUE,
+    ano INT,
+    mes INT,
+    trimestre INT
+);
+
+CREATE TABLE IF NOT EXISTS fato_cotacoes (
+    id_cotacao SERIAL PRIMARY KEY,
+    id_empresa INT REFERENCES dim_empresa(id_empresa),
+    id_data INT REFERENCES dim_data(id_data),
+    preco_abertura NUMERIC,
+    preco_fechamento NUMERIC,
+    maxima NUMERIC,
+    minima NUMERIC,
+    volume BIGINT,
+    CONSTRAINT unique_cotacao UNIQUE (id_empresa, id_data)
+);
